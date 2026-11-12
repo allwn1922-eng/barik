@@ -1,1 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portofolio - Ahmad Barik Alwan</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f4f7f6; color: #333; line-height: 1.6; padding: 20px; }
+    .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    
+    header { text-align: center; border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px; }
+    .profile-img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid #007bff; margin-bottom: 15px; }
+    h1 { color: #2c3e50; font-size: 2em; margin-bottom: 5px; }
+    p.tagline { color: #7f8c8d; font-size: 1.1em; }
 
+    section { margin-bottom: 30px; }
+    h2 { color: #007bff; border-bottom: 2px solid #007bff; display: inline-block; padding-bottom: 5px; margin-bottom: 15px; }
+    
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+    .gallery-card { background: #f9f9f9; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; text-align: center; }
+    .gallery-card img { width: 100%; height: 220px; object-fit: cover; }
+    .gallery-card p { padding: 10px; font-weight: bold; color: #444; }
+
+    .data-box { background: #eef6ff; padding: 15px; border-left: 5px solid #007bff; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header Profil -->
+    <header>
+      <!-- Ganti 'foto-profil.jpg' dengan URL/nama file foto close-up Anda -->
+      <img src="foto-profil.jpg" alt="Ahmad Barik Alwan" class="profile-img">
+      <h1>Ahmad Barik Alwan</h1>
+      <p class="tagline">Personal Portfolio & Athlete</p>
+    </header>
+
+    <!-- Galeri / Kegiatan -->
+    <section>
+      <h2>Galeri Foto</h2>
+      <div class="gallery">
+        <div class="gallery-card">
+          <!-- Ganti dengan URL/nama file foto profil Anda (topi) -->
+          <img src="foto-profil.jpg" alt="Ahmad Barik Alwan">
+          <p>Foto Profil</p>
+        </div>
+        <div class="gallery-card">
+          <!-- Ganti dengan URL/nama file foto futsal Anda -->
+          <img src="foto-futsal.jpg" alt="Ahmad Barik Alwan Futsal">
+          <p>Kegiatan Olahraga / Futsal</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Real-time dari Google Sheets -->
+    <section>
+      <h2>Detail & Informasi (Google Sheets API)</h2>
+      <div class="data-box" id="sheets-content">
+        <p>Sedang mengambil data dari Google Sheets...</p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Ganti teks di bawah dengan Link Publik CSV dari Google Sheets Anda
+    const googleSheetCSVUrl = 'MASUKKAN_URL_CSV_GOOGLE_SHEETS_DI_SINI';
+
+    async function fetchSheetData() {
+      try {
+        const response = await fetch(googleSheetCSVUrl);
+        const data = await response.text();
+        
+        const rows = data.split('\n').map(row => row.split(','));
+        
+        if (rows.length > 1) {
+          const skills = rows[1][1] || 'Keahlian belum diisi';
+          const experience = rows[1][2] || 'Pengalaman belum diisi';
+          
+          document.getElementById('sheets-content').innerHTML = `
+            <p><strong>Nama:</strong> Ahmad Barik Alwan</p>
+            <p style="margin-top: 8px;"><strong>Keahlian / Bio:</strong> ${skills}</p>
+            <p style="margin-top: 8px;"><strong>Pengalaman:</strong> ${experience}</p>
+          `;
+        }
+      } catch (error) {
+        document.getElementById('sheets-content').innerHTML = `
+          <p><strong>Nama:</strong> Ahmad Barik Alwan</p>
+          <p style="margin-top: 8px; color: #666;"><em>Catatan: Masukkan URL CSV Google Sheets pada kode script untuk menampilkan data otomatis.</em></p>
+        `;
+      }
+    }
+
+    fetchSheetData();
+  </script>
+
+</body>
+</html>
